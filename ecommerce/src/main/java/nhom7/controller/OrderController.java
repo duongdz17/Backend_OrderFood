@@ -20,10 +20,12 @@ import nhom7.model.Order;
 import nhom7.model.User;
 import nhom7.request.AddCartItemRequest;
 import nhom7.request.OrderRequest;
+import nhom7.response.MomoResponse;
 import nhom7.response.PaymentResponse;
 import nhom7.response.PaypalResponse;
 import nhom7.response.VNPayResponse;
 import nhom7.response.ZaloPayResponse;
+import nhom7.service.MomoService;
 import nhom7.service.OrderService;
 import nhom7.service.PaymentService;
 import nhom7.service.PaypalServices;
@@ -54,6 +56,9 @@ public class OrderController {
 	
 	@Autowired
 	private ZaloPayService zaloPayService;
+	
+	@Autowired
+	private MomoService momoService;
 	//VNPay
 //	@PostMapping("/order")
 //	public ResponseEntity<VNPayResponse> createOrder(@RequestBody OrderRequest req,
@@ -93,6 +98,9 @@ public class OrderController {
 	    	return new ResponseEntity<>(res, HttpStatus.OK); 
 	    }else if("zalopay".equalsIgnoreCase(req.getPaymentMethod())) {
 	    	ZaloPayResponse res = zaloPayService.createZaloPayLink(order);
+	    	return new ResponseEntity<>(res, HttpStatus.OK); 
+	    }else if("momo".equalsIgnoreCase(req.getPaymentMethod())) {
+	    	MomoResponse res = momoService.createMomoPayment(order);
 	    	return new ResponseEntity<>(res, HttpStatus.OK); 
 	    }
 	    	else {
